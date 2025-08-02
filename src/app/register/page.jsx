@@ -1,14 +1,16 @@
 "use client";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 
-export default function LoginPage() {
+export default function RegisterPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const router = useRouter();
 
-  const handleLogin = async (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
-    const response = await fetch("http://localhost:5000/api/auth/login", {
+    const response = await fetch("http://localhost:5000/api/auth/register", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, password }),
@@ -17,34 +19,34 @@ export default function LoginPage() {
     const data = await response.json();
     if (response.ok) {
       alert(data.message);
+      router.push("/login");
     } else {
       alert(data.message);
     }
   };
 
   return (
-    <div className="flex h-screen w-full">
-      {/* Left - Image */}
-      <div className="w-1/2 hidden md:flex items-center justify-center bg-green-100">
-        <img
-          src="https://images6.alphacoders.com/368/368882.jpg"
-          alt="Eco Login"
-          className="w-full h-full object-cover"
-        />
-      </div>
+    <div className="relative h-screen w-full bg-green-50 overflow-hidden">
+      {/* Blurred Eco Image Background */}
+      <img
+        src="https://thumbs.dreamstime.com/z/eco-friendly-energy-innovation-technology-green-concept-icon-bulb-sources-renewable-blur-background-inspiration-idea-274359972.jpg
+"
+        alt="Eco Background"
+        className="absolute w-full h-full object-cover blur-sm brightness-90"
+      />
 
-      {/* Right - Login Form */}
-      <div className="w-full md:w-1/2 bg-[#e6f4ec] flex items-center justify-center px-6">
-        <form onSubmit={handleLogin} className="max-w-md w-full space-y-6">
-          <h2 className="text-3xl font-bold text-green-800 text-center">
-            LOGIN
-          </h2>
+      {/* Overlay form */}
+      <div className="relative z-10 flex items-center justify-center h-full px-4">
+        <form
+          onSubmit={handleRegister}
+          className="bg-white bg-opacity-90 backdrop-blur-md shadow-xl rounded-2xl p-8 max-w-md w-full space-y-6"
+        >
+          <h2 className="text-3xl font-bold text-green-800 text-center">Register</h2>
 
-          {/* ✅ Updated Sign Up link using Link component */}
           <p className="text-center text-green-700">
-            Don’t have an account?{" "}
-            <Link href="/register" className="text-black font-medium hover:underline">
-              Sign Up
+            Already have an account?{" "}
+            <Link href="/login" className="text-black font-medium hover:underline">
+              Login
             </Link>
           </p>
 
@@ -56,6 +58,7 @@ export default function LoginPage() {
             onChange={(e) => setEmail(e.target.value)}
             required
           />
+
           <input
             type="password"
             placeholder="Enter your password"
@@ -64,11 +67,12 @@ export default function LoginPage() {
             onChange={(e) => setPassword(e.target.value)}
             required
           />
+
           <button
             type="submit"
             className="w-full bg-green-700 text-white py-3 rounded-full hover:bg-green-800 transition"
           >
-            Login
+            Create Account
           </button>
         </form>
       </div>

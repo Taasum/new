@@ -16,12 +16,12 @@ export default function Navbar() {
 
       {/* Location */}
       <button className="flex items-center text-sm hover:underline">
-        📍 Update Location
+         Update Location
       </button>
 
       {/* Eco Points */}
       <div className="relative group">
-        <button className="ml-4 hover:underline text-sm">🌱 ECO Points</button>
+        <button className="ml-4 hover:underline text-sm"> ECO Points</button>
         <div className="absolute hidden group-hover:block bg-white text-black text-xs p-2 rounded shadow top-full mt-1">
           You have 20 ECO points.
         </div>

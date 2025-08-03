@@ -31,7 +31,7 @@ export default function Home() {
 
         {/* Sell Waste Section */}
         <div className="bg-white shadow-md rounded-xl p-6 flex flex-col items-center text-center">
-          <Image src="/Sell Waste.png" alt="Sell Waste" width={600} height={150} className="rounded-lg mb-4" />
+          <Image src="/Sell Waste.png" alt="Sell Waste" width={1000} height={150} className="rounded-lg mb-4" />
           <h3 className="font-bold text-xl">♻️ Sell Your Waste</h3>
           <p className="text-sm mt-2 text-gray-600">Get rewarded for segregated waste. Schedule pickups, track impact, and reduce landfill.</p>
           <Link href="/sell-waste" className="mt-4 px-4 py-2 bg-green-600 text-white rounded-xl hover:bg-green-700">Start Selling</Link>
@@ -39,7 +39,7 @@ export default function Home() {
 
         {/* Buy Eco-Friendly Products Section */}
         <div className="bg-white shadow-md rounded-xl p-6 flex flex-col items-center text-center">
-          <Image src="/Buy Products.png" alt="Buy Eco Products" width={300} height={150} className="rounded-lg mb-4" />
+          <Image src="/Buy Products 2.png" alt="Buy Eco Products" width={600} height={350} className="rounded-lg mb-4" />
           <h3 className="font-bold text-xl">🛍️ Buy Eco-Friendly Products</h3>
           <p className="text-sm mt-2 text-gray-600">Browse handpicked sustainable alternatives and contribute to a cleaner planet.</p>
           <Link href="/buy-products" className="mt-4 px-4 py-2 bg-violet-600 text-white rounded-xl hover:bg-violet-700">Shop Now</Link>

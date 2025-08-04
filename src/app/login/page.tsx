@@ -1,6 +1,5 @@
 "use client";
 import { useState } from "react";
-import Link from "next/link";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -8,6 +7,7 @@ export default function LoginPage() {
 
   const handleLogin = async (e) => {
     e.preventDefault();
+
     const response = await fetch("http://localhost:5000/api/auth/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -16,9 +16,10 @@ export default function LoginPage() {
 
     const data = await response.json();
     if (response.ok) {
-      alert(data.message);
+      localStorage.setItem("token", data.token); // ✅ store token
+      alert("Login successful");
     } else {
-      alert(data.message);
+      alert(data.message || "Invalid credentials");
     }
   };
 
@@ -36,16 +37,10 @@ export default function LoginPage() {
       {/* Right - Login Form */}
       <div className="w-full md:w-1/2 bg-[#e6f4ec] flex items-center justify-center px-6">
         <form onSubmit={handleLogin} className="max-w-md w-full space-y-6">
-          <h2 className="text-3xl font-bold text-green-800 text-center">
-            LOGIN
-          </h2>
-
-          {/* ✅ Updated Sign Up link using Link component */}
+          <h2 className="text-3xl font-bold text-green-800 text-center">LOGIN</h2>
           <p className="text-center text-green-700">
             Don’t have an account?{" "}
-            <Link href="/register" className="text-black font-medium hover:underline">
-              Sign Up
-            </Link>
+            <a href="/register" className="text-black font-medium hover:underline">Sign Up</a>
           </p>
 
           <input

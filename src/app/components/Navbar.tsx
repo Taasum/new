@@ -95,7 +95,7 @@ export default function Navbar() {
             <Image
               src="/default-profile.png"
               alt="Zentara Logo"
-              width={40}
+              width={35}
               height={10}
               className="cursor-pointer"
             />

@@ -95,12 +95,12 @@ export default function Navbar() {
             <Image
               src="/default-profile.png"
               alt="Zentara Logo"
-              width={30}
-              height={20}
+              width={40}
+              height={10}
               className="cursor-pointer"
             />
           </Link>
-          <button className="text-sm hover:underline">📍 Update Location</button>
+          <button className="text-sm hover:underline"> Update Location</button>
         </div>
 
         {/* Right: ECO Points, Cart, Profile/Login, Hamburger */}

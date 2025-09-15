@@ -1,31 +1,39 @@
-"use client";
 
+// src/app/components/Navbar.tsx
+"use client";
 import Link from "next/link";
-import Image from "next/image";
 
 export default function Navbar() {
   return (
-    <nav className="flex items-center justify-between px-6 py-3 bg-green-700 text-white shadow-md">
-      {/* Left: Logo + Brand */}
-      <div className="flex items-center gap-3">
-        <Image
-          src="/agri-logo.png" // place AgriChain logo in public folder
-          alt="AgriChain Logo"
-          width={40}
-          height={40}
-        />
-        <span className="font-bold text-xl">AgriChain</span>
-      </div>
+    <nav className="bg-green-100 shadow-md">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="h-16 flex items-center justify-between">
+          {/* Logo */}
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-md bg-green-800 flex items-center justify-center">
+              {/* simple logo letter */}
+              <span className="text-white font-bold">A</span>
+            </div>
+            <Link href="/">
+              <span className="text-green-900 font-extrabold text-xl">AgriChain</span>
+            </Link>
+          </div>
 
-      {/* Right: Navigation Links */}
-      <div className="flex gap-6 items-center">
-        <Link href="/">Home</Link>
-        <Link href="/marketplace">Marketplace</Link>
-        <Link href="/waste-exchange">Waste Exchange</Link>
-        <Link href="/supply-chain">Supply Chain</Link>
-        <Link href="/cart">Cart</Link>
-        <Link href="/login">Login</Link>
-        <Link href="/register">Register</Link>
+          {/* Menu */}
+          <div className="hidden md:flex items-center gap-6 text-green-900 font-medium">
+            <Link href="/admin" className="hover:text-green-600">Admin</Link>
+            <a href="#" className="hover:text-green-600">Search</a>
+            <Link href="/login" className="hover:text-green-600">Login</Link>
+            <Link href="/register" className="hover:text-green-600">Register</Link>
+            <Link href="/about" className="hover:text-green-600">About</Link>
+            <Link href="/contact" className="hover:text-green-600">Contact</Link>
+          </div>
+
+          {/* Mobile placeholder - you can add burger later */}
+          <div className="md:hidden">
+            <button className="px-3 py-2 rounded-md bg-green-200 text-green-800">Menu</button>
+          </div>
+        </div>
       </div>
     </nav>
   );

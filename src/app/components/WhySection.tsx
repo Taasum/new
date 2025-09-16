@@ -3,11 +3,10 @@ export default function WhySection() {
   return (
     <section className="relative">
       <img
-        src="https://images.unsplash.com/photo-1502877338535-766e1452684a?auto=format&fit=crop&w=1600&q=80"
-        alt="Agriculture background"
+        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRIwP8DIO56_oPdZy_Ip-h5xEy_xgcoMWuwGg&s"
         className="w-full h-[420px] object-cover brightness-75"
       />
-
+                      
       <div className="absolute inset-0 flex items-center">
         <div className="max-w-4xl mx-auto px-6">
           <h2 className="text-3xl md:text-4xl font-bold text-green-800">Why AgriChain?</h2>

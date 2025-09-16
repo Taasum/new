@@ -8,7 +8,7 @@ import "swiper/css/pagination";
 export default function HeroSlider() {
   const slides = [
     {
-      src: "https://images.unsplash.com/photo-1607872236386-c2b5d5026a91?auto=format&fit=crop&w=1350&q=80",
+      src: "https://images.stockcake.com/public/5/f/a/5fa3c902-aed9-409f-9cf2-330391a96ad3_large/farmer-in-field-stockcake.jpg",
       alt: "Farmer in field",
     },
     {
@@ -16,7 +16,7 @@ export default function HeroSlider() {
       alt: "Agriculture fields",
     },
     {
-      src: "https://images.unsplash.com/photo-1518837695005-2083093ee35b?auto=format&fit=crop&w=1350&q=80",
+      src: "https://images.unsplash.com/photo-1500937386664-56d1dfef3854?auto=format&fit=crop&w=1350&q=80",
       alt: "Market and consumer",
     },
   ];

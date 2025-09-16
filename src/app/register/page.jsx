@@ -1,15 +1,52 @@
+"use client";
+import { useState } from "react";
+
 export default function RegisterPage() {
+  const [fullName, setFullName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleRegister = async () => {
+    const res = await fetch("http://localhost:5000/register", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ fullName, email, password })
+    });
+
+    const data = await res.json();
+    alert(data.message);
+  };
+
   return (
-    <main className="flex flex-col items-center justify-center min-h-screen bg-gray-50">
-      <h1 className="text-3xl font-bold mb-4 text-green-700">Register</h1>
-      <form className="flex flex-col gap-4 w-80 bg-white p-6 shadow-md rounded-lg">
-        <input type="text" placeholder="Full Name" className="border px-3 py-2 rounded" />
-        <input type="email" placeholder="Email" className="border px-3 py-2 rounded" />
-        <input type="password" placeholder="Password" className="border px-3 py-2 rounded" />
-        <button className="bg-green-700 text-white py-2 rounded hover:bg-green-800">
-          Create Account
-        </button>
-      </form>
-    </main>
+    <div className="flex flex-col items-center gap-4 p-6">
+      <h1 className="text-2xl font-bold">Register</h1>
+      <input
+        type="text"
+        placeholder="Full Name"
+        value={fullName}
+        onChange={(e) => setFullName(e.target.value)}
+        className="border p-2 rounded w-64"
+      />
+      <input
+        type="email"
+        placeholder="Email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        className="border p-2 rounded w-64"
+      />
+      <input
+        type="password"
+        placeholder="Password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+        className="border p-2 rounded w-64"
+      />
+      <button
+        onClick={handleRegister}
+        className="bg-blue-600 text-white px-4 py-2 rounded"
+      >
+        Register
+      </button>
+    </div>
   );
 }

@@ -15,11 +15,7 @@ export default function LoginModal({ isOpen, onClose }: Props) {
     <div className="fixed inset-0 z-50 flex items-center justify-center">
       {/* Background Image */}
       <div className="absolute inset-0">
-        <img
-          src="https://images.unsplash.com/photo-1524594151925-9d9d5e01c0a5"
-          alt="Farm background"
-          className="h-full w-full object-cover"
-        />
+        
         <div className="absolute inset-0 bg-black/40" /> {/* overlay for readability */}
       </div>
 

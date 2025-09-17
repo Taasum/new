@@ -3,7 +3,7 @@ export default function WhySection() {
   return (
     <section className="relative">
       <img
-        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRIwP8DIO56_oPdZy_Ip-h5xEy_xgcoMWuwGg&s"
+        src="https://www.shutterstock.com/image-photo/blockchain-technology-concept-revolutionizing-industries-600nw-2476544647.jpg"
         className="w-full h-[420px] object-cover brightness-75"
       />
                       

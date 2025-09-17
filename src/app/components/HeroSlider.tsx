@@ -8,15 +8,14 @@ import "swiper/css/pagination";
 export default function HeroSlider() {
   const slides = [
     {
-      src: "https://images.stockcake.com/public/5/f/a/5fa3c902-aed9-409f-9cf2-330391a96ad3_large/farmer-in-field-stockcake.jpg",
-      alt: "Farmer in field",
+      src: "https://img.freepik.com/premium-photo/agriculture-asian-farmer-using-mobile-phone-check-fresh-green-corn-s-sprouts-soil-maize-spring-field_61243-1800.jpg"
     },
     {
       src: "https://images.unsplash.com/photo-1500937386664-56d1dfef3854?auto=format&fit=crop&w=1350&q=80",
       alt: "Agriculture fields",
     },
     {
-      src: "https://images.unsplash.com/photo-1500937386664-56d1dfef3854?auto=format&fit=crop&w=1350&q=80",
+      src: "https://media.istockphoto.com/id/855984178/photo/wegetables-in-a-warehouse.jpg?s=612x612&w=0&k=20&c=Ngxxnne6DQIaafBHhqU26D_ahOu6ez4mYE_Uo90K4D0=",
       alt: "Market and consumer",
     },
   ];

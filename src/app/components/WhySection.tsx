@@ -1,10 +1,9 @@
-// src/app/components/WhySection.tsx
 export default function WhySection() {
   return (
     <section className="relative">
       <img
-        src="https://www.shutterstock.com/image-photo/blockchain-technology-concept-revolutionizing-industries-600nw-2476544647.jpg"
-        className="w-full h-[420px] object-cover brightness-75"
+       src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSL0ILULWkSlzttR1pgi6OrpipgUaiwZASdzMiYrp7MfiAUsxoPiU5DDmqHivvtQWK0uqE&usqp=CAU"
+      className="w-full h-[420px] object-cover brightness-75"
       />
                       
       <div className="absolute inset-0 flex items-center">

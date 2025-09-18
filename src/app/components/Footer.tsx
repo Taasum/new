@@ -116,7 +116,7 @@ export default function Footer() {
           All Rights Reserved.
         </p>
         <p className="opacity-80">
-          🌍 Made with ❤️ in India • Powered by Blockchain • AI
+          🌍 Made with ❤️ in India • Powered by Blockchain 
         </p>
       </div>
     </footer>

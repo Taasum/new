@@ -8,14 +8,14 @@ import "swiper/css/pagination";
 export default function HeroSlider() {
   const slides = [
     {
-      src: "https://img.freepik.com/premium-photo/agriculture-asian-farmer-using-mobile-phone-check-fresh-green-corn-s-sprouts-soil-maize-spring-field_61243-1800.jpg"
+      src: "/img5.png"
     },
     {
-      src: "https://images.unsplash.com/photo-1500937386664-56d1dfef3854?auto=format&fit=crop&w=1350&q=80",
+      src: "/img8.png",
       alt: "Agriculture fields",
     },
     {
-      src: "https://media.istockphoto.com/id/855984178/photo/wegetables-in-a-warehouse.jpg?s=612x612&w=0&k=20&c=Ngxxnne6DQIaafBHhqU26D_ahOu6ez4mYE_Uo90K4D0=",
+      src: "/img10.png",
       alt: "Market and consumer",
     },
   ];

@@ -2,7 +2,7 @@ export default function WhySection() {
   return (
     <section className="relative">
       <img
-       src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSL0ILULWkSlzttR1pgi6OrpipgUaiwZASdzMiYrp7MfiAUsxoPiU5DDmqHivvtQWK0uqE&usqp=CAU"
+       src="/img3.png"
       className="w-full h-[420px] object-cover brightness-75"
       />
                       

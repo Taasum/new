@@ -1,4 +1,4 @@
-// server.js
+// server.cjs
 const express = require("express");
 const multer = require("multer");
 const cors = require("cors");
@@ -17,48 +17,61 @@ if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir);
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => cb(null, uploadDir),
-  filename: (req, file, cb) => cb(null, Date.now() + path.extname(file.originalname)),
+  filename: (req, file, cb) =>
+    cb(null, Date.now() + path.extname(file.originalname)),
 });
 const upload = multer({ storage });
 
 // ------------------
-// Crop Upload Route (Fixed Price Demo)
+// In-memory storage for demo crops
+// ------------------
+const crops = [];
+
+// ------------------
+// Upload Crop
 // ------------------
 app.post("/upload", upload.single("image"), (req, res) => {
   const { name, weight, location } = req.body;
-  if (!name || !weight || !location || !req.file)
-    return res.status(400).json({ message: "All fields required" });
+  if (!name || !weight || !location || !req.file) {
+    return res.status(400).json({ message: "All fields are required" });
+  }
 
-  const fixedPricePerUnit = 2862; // Fixed Modal Price from first CSV row
+  const pricePerUnit = 2862; // fixed price
   const w = parseFloat(weight);
-  const totalPrice = fixedPricePerUnit * w;
+  const totalPrice = pricePerUnit * w;
 
-  res.json({
-    success: true,
+  const crop = {
+    id: Date.now(),
     crop: name,
+    farmer: "Demo Farmer", // replace with login later
     weight: w,
-    price: fixedPricePerUnit,
-    totalPrice,
     location,
-    image: req.file.path,
-    note: "Demo using fixed price 2862",
-  });
+    price: pricePerUnit,
+    totalPrice,
+    status: "Pending",
+    image: `/uploads/${req.file.filename}`,
+  };
+
+  crops.push(crop);
+  res.json({ success: true, crop });
 });
 
 // ------------------
-// Serve uploads
+// Get all crops for warehouse
+// ------------------
+app.get("/api/warehouse", (req, res) => {
+  res.json(crops);
+});
+
+// ------------------
+// Serve uploads folder
 // ------------------
 app.use("/uploads", express.static(uploadDir));
-
-// ------------------
-// Optional: Test route
-// ------------------
-app.get("/", (req, res) => {
-  res.send("🚀 Backend is running. POST /upload to test crop price calculation.");
-});
 
 // ------------------
 // Start server
 // ------------------
 const PORT = 5000;
-app.listen(PORT, () => console.log(`🚀 Backend running at http://127.0.0.1:${PORT}`));
+app.listen(PORT, () =>
+  console.log(`🚀 Backend running at http://127.0.0.1:${PORT}`)
+);

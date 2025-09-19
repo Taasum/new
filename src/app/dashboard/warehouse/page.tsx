@@ -1,90 +1,113 @@
 "use client";
+import React, { useState } from "react";
 
-import { useEffect, useState } from "react";
-
-interface Crop {
+// Define Crop type
+type Crop = {
   id: number;
-  crop: string;
+  name: string;
   farmer: string;
-  weight: number;
+  weight: string;
   location: string;
-  price: number;
+  status: "Pending" | "Accepted" | "Delivered";
+  deliveryDate: string | null;
   totalPrice: number;
-  status: string;
-  image: string;
-}
+};
 
 export default function WarehouseDashboard() {
-  const [crops, setCrops] = useState<Crop[]>([]);
+  // Sample crops
+  const [crops, setCrops] = useState<Crop[]>([
+    {
+      id: 1,
+      name: "Wheat",
+      farmer: "Farmer User",
+      weight: "2 tons",
+      location: "Madhya Pradesh",
+      status: "Pending",
+      deliveryDate: null,
+      totalPrice: 2862 * 2,
+    },
+    {
+      id: 2,
+      name: "Rice",
+      farmer: "Farmer User",
+      weight: "1 ton",
+      location: "Uttar Pradesh",
+      status: "Pending",
+      deliveryDate: null,
+      totalPrice: 2862 * 1,
+    },
+  ]);
 
-  // Fetch crops from backend once
-  useEffect(() => {
-    fetch("http://localhost:5000/api/warehouse")
-      .then((res) => res.json())
-      .then((data) => setCrops(data))
-      .catch(console.error);
-  }, []);
-
-  // Client-side status update
-  const handleStatusChange = (id: number, newStatus: "Accepted" | "Rejected") => {
+  // Accept crop -> assign delivery date
+  const handleAccept = (id: number) => {
     setCrops((prev) =>
-      prev.map((crop) =>
-        crop.id === id ? { ...crop, status: newStatus } : crop
+      prev.map((c) =>
+        c.id === id
+          ? { ...c, status: "Accepted", deliveryDate: "21 Sep 2025" }
+          : c
       )
     );
+    alert("✅ Crop accepted! Delivery Date: 21 Sep 2025");
+  };
+
+  // Confirm delivery -> release payment
+  const handleDelivery = (id: number) => {
+    setCrops((prev) =>
+      prev.map((c) =>
+        c.id === id ? { ...c, status: "Delivered" } : c
+      )
+    );
+    const crop = crops.find((c) => c.id === id);
+    if (crop) alert(`💰 Payment of ₹${crop.totalPrice} released to farmer!`);
   };
 
   return (
-    <div className="p-6 max-w-5xl mx-auto">
-      <h1 className="text-2xl font-bold mb-4">🏬 Warehouse Dashboard</h1>
+    <main className="min-h-screen p-8 bg-gray-50 font-sans">
+      <h1 className="text-4xl font-bold mb-6 text-gray-700">Warehouse Dashboard</h1>
 
-      {crops.length === 0 && <p>No crops received yet.</p>}
+      <section className="grid md:grid-cols-2 gap-6">
+        {crops.map((c) => (
+          <div key={c.id} className="bg-white p-4 rounded-xl shadow flex flex-col gap-2">
+            <h2 className="font-semibold text-lg">{c.name}</h2>
+            <p>Farmer: {c.farmer}</p>
+            <p>Weight: {c.weight}</p>
+            <p>Location: {c.location}</p>
+            <p>
+              Status:{" "}
+              <span
+                className={
+                  c.status === "Delivered"
+                    ? "text-green-600"
+                    : c.status === "Accepted"
+                    ? "text-blue-600"
+                    : "text-yellow-600"
+                }
+              >
+                {c.status}
+              </span>
+            </p>
+            {c.deliveryDate && <p>Delivery Date: {c.deliveryDate}</p>}
 
-      <div className="grid gap-4">
-        {crops.map((crop) => (
-          <div
-            key={crop.id}
-            className={`border-l-4 p-4 rounded shadow-md flex flex-col md:flex-row gap-4 ${
-              crop.status === "Pending"
-                ? "border-yellow-500 bg-yellow-50"
-                : crop.status === "Accepted"
-                ? "border-green-500 bg-green-50"
-                : "border-red-500 bg-red-50"
-            }`}
-          >
-            <img
-              src={`http://localhost:5000${crop.image}`}
-              alt={crop.crop}
-              className="w-32 h-24 object-cover rounded border"
-            />
-            <div className="flex-1">
-              <h2 className="font-semibold text-lg">{crop.crop}</h2>
-              <p>Farmer: {crop.farmer}</p>
-              <p>Location: {crop.location}</p>
-              <p>Weight: {crop.weight} Kg</p>
-              <p>Price per Unit: ₹{crop.price}</p>
-              <p>Total: ₹{crop.totalPrice}</p>
-              <p>Status: {crop.status}</p>
-            </div>
-            {crop.status === "Pending" && (
-              <div className="flex flex-col gap-2">
-                <button
-                  onClick={() => handleStatusChange(crop.id, "Accepted")}
-                  className="bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700"
-                >
-                  Accept
-                </button>
-                <button
-                  onClick={() => handleStatusChange(crop.id, "Rejected")}
-                  className="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700"
-                >
-                  Reject
-                </button>
-              </div>
+            {c.status === "Pending" && (
+              <button
+                onClick={() => handleAccept(c.id)}
+                className="bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700"
+              >
+                Accept Crop
+              </button>
+            )}
+
+            {c.status === "Accepted" && (
+              <button
+                onClick={() => handleDelivery(c.id)}
+                className="bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700"
+              >
+                Mark Delivered & Release Payment
+              </button>
             )}
           </div>
         ))}
-      </div>
-    </div>
+      </section>
+    </main>
   );
 }

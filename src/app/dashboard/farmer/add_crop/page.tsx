@@ -10,6 +10,9 @@ export default function AddCropPage() {
   const [loading, setLoading] = useState(false);
   const [streaming, setStreaming] = useState(false);
   const [response, setResponse] = useState<any>(null);
+  const [status, setStatus] = useState<string | null>(null);
+  const [deliveryDate, setDeliveryDate] = useState<string | null>(null);
+  const [paymentNotified, setPaymentNotified] = useState(false);
 
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -53,7 +56,7 @@ export default function AddCropPage() {
     stopWebcam();
   };
 
-  // Submit crop to backend
+  // Submit crop
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!name.trim()) return alert("Crop name required");
@@ -63,6 +66,9 @@ export default function AddCropPage() {
 
     setLoading(true);
     setResponse(null);
+    setStatus("Pending");
+    setDeliveryDate(null);
+    setPaymentNotified(false);
 
     try {
       const formData = new FormData();
@@ -83,13 +89,27 @@ export default function AddCropPage() {
         setName(""); setWeight(""); setLocation(""); setImage(null);
       } else {
         alert("❌ Upload failed");
+        setStatus(null);
       }
     } catch (err) {
       console.error(err);
       alert("❌ Error while uploading");
+      setStatus(null);
     }
 
     setLoading(false);
+  };
+
+  // Simulate warehouse acceptance
+  const handleWarehouseAccept = () => {
+    if (!response) return;
+    setStatus("Accepted");
+    setDeliveryDate("21 Sep 2025");
+
+    setTimeout(() => {
+      setStatus("Payment Released");
+      setPaymentNotified(true);
+    }, 2000); // simulate delivery/payment delay
   };
 
   return (
@@ -97,67 +117,28 @@ export default function AddCropPage() {
       <h1 className="text-2xl font-bold mb-4">🌾 Add Crop</h1>
 
       <form onSubmit={handleSubmit} className="space-y-4 border p-4 rounded-lg shadow">
-        <input
-          type="text"
-          placeholder="Crop Name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          className="w-full border p-2 rounded"
-          required
-        />
-        <input
-          type="number"
-          placeholder="Weight (Kg)"
-          value={weight}
-          onChange={(e) => setWeight(e.target.value)}
-          className="w-full border p-2 rounded"
-          min={1}
-          required
-        />
-        <input
-          type="text"
-          placeholder="Location"
-          value={location}
-          onChange={(e) => setLocation(e.target.value)}
-          className="w-full border p-2 rounded"
-          required
-        />
-        <input
-          type="file"
-          accept="image/*"
-          capture="environment"
-          onChange={(e) => setImage(e.target.files?.[0] || null)}
-          className="w-full border p-2 rounded"
-          required
-        />
+        <input type="text" placeholder="Crop Name" value={name} onChange={(e) => setName(e.target.value)} className="w-full border p-2 rounded" required />
+        <input type="number" placeholder="Weight (Kg)" value={weight} onChange={(e) => setWeight(e.target.value)} className="w-full border p-2 rounded" min={1} required />
+        <input type="text" placeholder="Location" value={location} onChange={(e) => setLocation(e.target.value)} className="w-full border p-2 rounded" required />
+        <input type="file" accept="image/*" capture="environment" onChange={(e) => setImage(e.target.files?.[0] || null)} className="w-full border p-2 rounded" required />
 
         {/* Webcam Controls */}
         <div className="mt-2">
           {!streaming ? (
-            <button type="button" onClick={startWebcam} className="bg-blue-600 text-white px-3 py-1 rounded">
-              Open Webcam
-            </button>
+            <button type="button" onClick={startWebcam} className="bg-blue-600 text-white px-3 py-1 rounded">Open Webcam</button>
           ) : (
             <div className="mt-2">
               <video ref={videoRef} autoPlay className="w-full border rounded" />
               <div className="flex gap-2 mt-2">
-                <button type="button" onClick={capturePhoto} className="bg-green-600 text-white px-3 py-1 rounded">
-                  Capture Photo
-                </button>
-                <button type="button" onClick={stopWebcam} className="bg-red-600 text-white px-3 py-1 rounded">
-                  Close Webcam
-                </button>
+                <button type="button" onClick={capturePhoto} className="bg-green-600 text-white px-3 py-1 rounded">Capture Photo</button>
+                <button type="button" onClick={stopWebcam} className="bg-red-600 text-white px-3 py-1 rounded">Close Webcam</button>
               </div>
               <canvas ref={canvasRef} style={{ display: "none" }} />
             </div>
           )}
         </div>
 
-        <button
-          type="submit"
-          className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 mt-4"
-          disabled={loading}
-        >
+        <button type="submit" className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 mt-4" disabled={loading}>
           {loading ? "Uploading..." : "Submit"}
         </button>
       </form>
@@ -171,6 +152,14 @@ export default function AddCropPage() {
           <p>Location: {response.location}</p>
           <p>Price per Unit: ₹{response.price}</p>
           <p>Total Price: ₹{response.totalPrice}</p>
+          <p>Status: <span className={status === "Accepted" ? "text-blue-600" : status === "Payment Released" ? "text-green-700" : "text-yellow-600"}>{status}</span></p>
+          {deliveryDate && <p>📅 Delivery Date: {deliveryDate}</p>}
+
+          {status === "Pending" && (
+            <button onClick={handleWarehouseAccept} className="bg-blue-600 text-white px-3 py-1 rounded mt-2">Simulate Warehouse Accept</button>
+          )}
+
+          {paymentNotified && <p className="mt-2 text-green-700 font-semibold">💰 Payment Released!</p>}
         </div>
       )}
     </div>

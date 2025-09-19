@@ -1,18 +1,38 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 
 export default function FarmerDashboard() {
-  const [fullName] = useState("Farmer User"); // Default name, bina login ke
+  const [fullName] = useState("Farmer User");
   const [crops, setCrops] = useState([
     { id: 1, name: "Wheat", qty: "2 tons", harvest: "2025-03-10", status: "Stored" },
     { id: 2, name: "Rice", qty: "1.2 tons", harvest: "2025-05-01", status: "In Transit" },
   ]);
 
+  // notifications state
+  const [notifications, setNotifications] = useState<
+    { id: number; message: string; date: string }[]
+  >([]);
+
   const handleLogout = () => {
-    // abhi ke liye login system nahi hai, so sirf refresh karwa do
     window.location.href = "/";
   };
+
+  // Simulate a crop added from AddCropPage (replace with real API in future)
+  useEffect(() => {
+    // Example notification
+    const newNotif = {
+      id: 1,
+      message: "🌾 Your crop 'Maize' has been accepted by warehouse. Delivery Date: 21 Sep 2025",
+      date: new Date().toLocaleString(),
+    };
+    const paymentNotif = {
+      id: 2,
+      message: "💰 Payment of ₹2862 released to your account for 'Maize'",
+      date: new Date().toLocaleString(),
+    };
+    setNotifications([newNotif, paymentNotif]); // add to top
+  }, []);
 
   return (
     <main className="min-h-screen p-8 bg-green-50 font-sans">
@@ -29,19 +49,27 @@ export default function FarmerDashboard() {
         </div>
       </header>
 
-      {/* Farmer profile */}
+      {/* Notifications Panel */}
       <section className="bg-white p-6 rounded-xl shadow mb-6">
-        <h2 className="text-2xl font-semibold mb-2">Profile Overview</h2>
-        <p>Aadhaar Verified · KCC Linked · Bank/UPI Connected</p>
+        <h2 className="text-2xl font-semibold mb-2">Notifications</h2>
+        {notifications.length === 0 ? (
+          <p className="text-gray-500">No notifications yet</p>
+        ) : (
+          <ul className="space-y-2">
+            {notifications.map((n) => (
+              <li key={n.id} className="border p-2 rounded bg-gray-50">
+                <p>{n.message}</p>
+                <span className="text-xs text-gray-400">{n.date}</span>
+              </li>
+            ))}
+          </ul>
+        )}
       </section>
 
-      {/* Crops */}
+      {/* Crops Section */}
       <section className="grid md:grid-cols-2 gap-6 mb-6">
         {crops.map((c) => (
-          <div
-            key={c.id}
-            className="bg-white p-4 rounded-xl shadow flex items-center gap-4"
-          >
+          <div key={c.id} className="bg-white p-4 rounded-xl shadow flex items-center gap-4">
             <img
               src={`/images/${c.name.toLowerCase()}.jpg`}
               alt={c.name}
@@ -49,21 +77,8 @@ export default function FarmerDashboard() {
             />
             <div className="flex-1">
               <h3 className="font-semibold text-lg">{c.name}</h3>
-              <p>
-                {c.qty} • Harvest: {c.harvest}
-              </p>
-              <p>
-                Status:{" "}
-                <span
-                  className={
-                    c.status === "Stored"
-                      ? "text-green-600"
-                      : "text-orange-500"
-                  }
-                >
-                  {c.status}
-                </span>
-              </p>
+              <p>{c.qty} • Harvest: {c.harvest}</p>
+              <p>Status: <span className={c.status === "Stored" ? "text-green-600" : "text-orange-500"}>{c.status}</span></p>
             </div>
           </div>
         ))}

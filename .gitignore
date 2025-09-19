@@ -179,3 +179,10 @@ next-env.d.ts
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 >>>>>>> a048e5b5b1f351edb36ec8ee76aea97e673d57be
+venv/
+**/site-packages/
+*.pydvenv/ 
+**/site-packages/ 
+*.pyc 
+*.pyd 
+__pycache__/ 

@@ -1,4 +1,3 @@
-
 "use client";
 import React, { useState } from "react";
 import { FaTractor, FaShoppingCart, FaWarehouse } from "react-icons/fa";
@@ -6,7 +5,6 @@ import { FaTractor, FaShoppingCart, FaWarehouse } from "react-icons/fa";
 export default function RegisterPage() {
   const [role, setRole] = useState<"farmer" | "consumer" | "warehouse">("farmer");
 
-  // Reusable class for inputs
   const inputClass =
     "p-3 border border-gray-400 rounded-lg bg-white w-full hover:shadow-md hover:shadow-green-200 transition focus:outline-none focus:border-green-600 focus:ring-2 focus:ring-green-300";
 
@@ -114,7 +112,6 @@ export default function RegisterPage() {
               </>
             )}
 
-            {/* Submit */}
             <button
               type="submit"
               className="mt-4 w-full bg-gradient-to-r from-green-600 to-green-500 hover:from-green-700 hover:to-green-600 text-white p-3 rounded-xl font-semibold shadow-lg transition transform hover:scale-105"
@@ -127,4 +124,3 @@ export default function RegisterPage() {
     </main>
   );
 }
-

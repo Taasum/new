@@ -1,107 +1,64 @@
-// const express = require("express");
-// const cors = require("cors");
-// const bodyParser = require("body-parser");
-
-// const app = express();
-// app.use(cors());
-// app.use(bodyParser.json());
-
-// // Temporary in-memory DB
-// let users = [];
-
-// // Registration
-// app.post("/register", (req, res) => {
-//   const {
-//     fullName, aadhar, kccId, contact, email,
-//     address, bankUpi, password, confirmPassword
-//   } = req.body;
-
-//   if (!fullName || !password || !confirmPassword) {
-//     return res.status(400).json({ message: "Full Name, Password and Confirm Password are required" });
-//   }
-
-//   if (password !== confirmPassword) {
-//     return res.status(400).json({ message: "Passwords do not match" });
-//   }
-
-//   const exists = users.find(u => u.fullName === fullName);
-//   if (exists) {
-//     return res.status(400).json({ message: "User already exists" });
-//   }
-
-//   users.push({ fullName, aadhar, kccId, contact, email, address, bankUpi, password });
-//   res.json({ message: "Registered Successfully" });
-// });
-
-// // Login route
-// app.post("/login", (req, res) => {
-//   const { fullName, password } = req.body;
-
-//   const user = users.find(
-//     (u) => u.fullName === fullName && u.password === password
-//   );
-
-//   if (user) {
-//     return res.json({ success: true, message: "Login successful" });
-//   } else {
-//     return res.json({ success: false, message: "User not registered" });
-//   }
-// });
-
-// // Start server
-// app.listen(5000, () => {
-//   console.log("✅ Backend running on http://localhost:5000");
-// });
+// server.js
 const express = require("express");
+const multer = require("multer");
 const cors = require("cors");
-const bodyParser = require("body-parser");
+const path = require("path");
+const fs = require("fs");
 
 const app = express();
 app.use(cors());
-app.use(bodyParser.json());
+app.use(express.json());
 
-// In-memory storage for registered users
-let users = [];
+// ------------------
+// Upload setup
+// ------------------
+const uploadDir = path.join(__dirname, "uploads");
+if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir);
 
-// Registration route
-app.post("/register", (req, res) => {
-  const { fullName, aadhar, kccId, contact, email, address, bankUpi, password, confirmPassword } = req.body;
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => cb(null, uploadDir),
+  filename: (req, file, cb) => cb(null, Date.now() + path.extname(file.originalname)),
+});
+const upload = multer({ storage });
 
-  if (!fullName || !password || !confirmPassword) {
-    return res.status(400).json({ message: "Full Name, Password and Confirm Password are required" });
-  }
+// ------------------
+// Crop Upload Route (Fixed Price Demo)
+// ------------------
+app.post("/upload", upload.single("image"), (req, res) => {
+  const { name, weight, location } = req.body;
+  if (!name || !weight || !location || !req.file)
+    return res.status(400).json({ message: "All fields required" });
 
-  if (password !== confirmPassword) {
-    return res.status(400).json({ message: "Passwords do not match" });
-  }
+  const fixedPricePerUnit = 2862; // Fixed Modal Price from first CSV row
+  const w = parseFloat(weight);
+  const totalPrice = fixedPricePerUnit * w;
 
-  const exists = users.find(u => u.fullName === fullName);
-  if (exists) {
-    return res.status(400).json({ message: "User already exists" });
-  }
-
-  users.push({ fullName, aadhar, kccId, contact, email, address, bankUpi, password });
-  res.json({ message: "Registered Successfully" });
+  res.json({
+    success: true,
+    crop: name,
+    weight: w,
+    price: fixedPricePerUnit,
+    totalPrice,
+    location,
+    image: req.file.path,
+    note: "Demo using fixed price 2862",
+  });
 });
 
-// ⬅️ Add login route here
-app.post("/login", (req, res) => {
-  const { fullName, password } = req.body;
+// ------------------
+// Serve uploads
+// ------------------
+app.use("/uploads", express.static(uploadDir));
 
-  if (!fullName || !password) {
-    return res.json({ success: false, message: "Full Name and Password are required" });
-  }
-
-  const user = users.find(u => u.fullName === fullName && u.password === password);
-
-  if (user) {
-    return res.json({ success: true, message: "Login successful" });
-  } else {
-    return res.json({ success: false, message: "User not registered" });
-  }
+// ------------------
+// Optional: Test route
+// ------------------
+app.get("/", (req, res) => {
+  res.send("🚀 Backend is running. POST /upload to test crop price calculation.");
 });
 
+// ------------------
 // Start server
-app.listen(5000, () => {
-  console.log("✅ Backend running on http://localhost:5000");
-});
+// ------------------
+const PORT = 5000;
+app.listen(PORT, () => console.log(`🚀 Backend running at http://127.0.0.1:${PORT}`));

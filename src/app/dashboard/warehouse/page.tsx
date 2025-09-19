@@ -1,5 +1,6 @@
 "use client";
 import React, { useState } from "react";
+import QRCode from "react-qr-code";
 
 // Define Crop type
 type Crop = {
@@ -63,11 +64,16 @@ export default function WarehouseDashboard() {
 
   return (
     <main className="min-h-screen p-8 bg-gray-50 font-sans">
-      <h1 className="text-4xl font-bold mb-6 text-gray-700">Warehouse Dashboard</h1>
+      <h1 className="text-4xl font-bold mb-6 text-gray-700">
+        Warehouse Dashboard
+      </h1>
 
       <section className="grid md:grid-cols-2 gap-6">
         {crops.map((c) => (
-          <div key={c.id} className="bg-white p-4 rounded-xl shadow flex flex-col gap-2">
+          <div
+            key={c.id}
+            className="bg-white p-4 rounded-xl shadow flex flex-col gap-3"
+          >
             <h2 className="font-semibold text-lg">{c.name}</h2>
             <p>Farmer: {c.farmer}</p>
             <p>Weight: {c.weight}</p>
@@ -87,6 +93,21 @@ export default function WarehouseDashboard() {
               </span>
             </p>
             {c.deliveryDate && <p>Delivery Date: {c.deliveryDate}</p>}
+
+            {/* QR Code */}
+            <div className="mt-2 flex justify-center">
+              <QRCode
+                value={JSON.stringify({
+                  id: c.id,
+                  crop: c.name,
+                  farmer: c.farmer,
+                  weight: c.weight,
+                  price: c.totalPrice,
+                  status: c.status,
+                })}
+                size={128}
+              />
+            </div>
 
             {c.status === "Pending" && (
               <button

@@ -188,7 +188,19 @@ app.get("/api/mandi/prices", (req, res) => {
       res.status(500).json({ message: "CSV read error" });
     });
 });
+// ------------------
+// Verify QR -> return crop details
+// ------------------
+app.get("/api/qr/:id", (req, res) => {
+  const cropId = parseInt(req.params.id);
+  const crop = crops.find((c) => c.id === cropId);
 
+  if (!crop) {
+    return res.status(404).json({ success: false, message: "Invalid QR or crop not found" });
+  }
+
+  res.json({ success: true, crop });
+});
 // ------------------
 // Serve uploads folder
 // ------------------

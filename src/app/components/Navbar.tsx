@@ -30,10 +30,9 @@ export default function Navbar() {
               >
                 Login
               </button>
-
+              <Link href="/register" className="hover:text-green-600">Register</Link>
               <Link href="/admin" className="hover:text-green-600">Admin</Link>
               <a href="#" className="hover:text-green-600">Search</a>
-              <Link href="/register" className="hover:text-green-600">Register</Link>
               <Link href="/about" className="hover:text-green-600">About</Link>
               <Link href="/contact" className="hover:text-green-600">Contact</Link>
             </div>
